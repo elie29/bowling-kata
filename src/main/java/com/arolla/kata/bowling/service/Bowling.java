@@ -103,7 +103,7 @@ public class Bowling
          return 10 + frames[currentIndex + 2].getFirstRoll();
       }
 
-      // only current frame is strike, get next frame score as bonus
+      // only current frame is a strike, get next frame score as bonus
       return frames[currentIndex + 1].rollsScore();
    }
 }
