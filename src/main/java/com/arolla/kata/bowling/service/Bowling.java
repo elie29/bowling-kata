@@ -49,8 +49,8 @@ public class Bowling
    private void computeBonusWhenSpare(int currentRoll)
    {
       if (frames[currentStep].isSpare()) {
-         // first roll of next frame
-         int next = currentRoll + 2 < rolls.size() ? rolls.get(currentRoll + 2) : 0;
+         // first roll of next frame or extra roll
+         int next = rolls.get(currentRoll + 2);
          frames[currentStep].setBonus(next);
       }
    }
