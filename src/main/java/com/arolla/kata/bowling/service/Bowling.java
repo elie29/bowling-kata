@@ -2,18 +2,21 @@ package com.arolla.kata.bowling.service;
 
 import com.arolla.kata.bowling.entity.Frame;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 public class Bowling
 {
+   private static final int FRAME_NINE_INDEX = 8;
+   private static final int FRAME_TEN_INDEX = 9;
+   private static final int EXTRA_ROLL_INDEX = 20;
+   private static final int MAX_FRAMES = 10;
+
    private Frame[] frames;
    private int currentStep;
 
-   private final int MAX_FRAMES = 10;
-   private final List<Integer> rolls;
+   private final int[] rolls;
 
-   public Bowling(List<Integer> rolls)
+   public Bowling(int[] rolls)
    {
       this.rolls = rolls;
    }
@@ -23,6 +26,7 @@ public class Bowling
       createFramesFromRolls();
       computeScoreWhenStrike();
 
+      // sum all frames total score
       return Stream.of(frames).mapToInt(frame -> frame.totalScore()).reduce(0, Integer::sum);
    }
 
@@ -41,16 +45,16 @@ public class Bowling
 
    private void addFrame(int currentRoll)
    {
-      int firstRoll = rolls.get(currentRoll);
-      int secondRoll = rolls.get(currentRoll + 1);
+      int firstRoll = rolls[currentRoll];
+      int secondRoll = rolls[currentRoll + 1];
       frames[currentStep] = new Frame(firstRoll, secondRoll);
    }
 
    private void computeBonusWhenSpare(int currentRoll)
    {
       if (frames[currentStep].isSpare()) {
-         // first roll of next frame or extra roll
-         int next = rolls.get(currentRoll + 2);
+         // set bonus from the first roll of next frame or extra roll
+         int next = rolls[currentRoll + 2];
          frames[currentStep].setBonus(next);
       }
    }
@@ -74,18 +78,18 @@ public class Bowling
       int bonus;
 
       // first eight frames
-      if (currentIndex < 8) {
+      if (currentIndex < FRAME_NINE_INDEX) {
          bonus = computeBonusOnStrikeForFirstEightFrames(currentIndex);
       }
 
       // for frame number 9, bonus is equivalent to the score of frame number 10
-      else if (currentIndex == 8) {
-         bonus = frames[9].rollsScore();
+      else if (currentIndex == FRAME_NINE_INDEX) {
+         bonus = frames[FRAME_TEN_INDEX].rollsScore();
       }
 
       // for frame number 10, bonus is equivalent to the extra roll (index 20)
       else {
-         bonus = rolls.get(20);
+         bonus = rolls[EXTRA_ROLL_INDEX];
       }
 
       frames[currentIndex].setBonus(bonus);
