@@ -87,7 +87,7 @@ public class Bowling
          bonus = frames[FRAME_TEN_INDEX].rollsScore();
       }
 
-      // for frame number 10, bonus is equivalent to the extra roll (index 20)
+      // for frame number 10, bonus is equivalent to the extra roll
       else {
          bonus = rolls[EXTRA_ROLL_INDEX];
       }
